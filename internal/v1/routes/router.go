@@ -8,6 +8,7 @@ func InitRoutes() *fasthttprouter.Router {
 	router := fasthttprouter.New()
 
 	//OBRA-3 ROUTES
+	TestRoutes(router)
 
 	return router
 }
