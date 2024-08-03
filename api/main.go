@@ -29,7 +29,7 @@ func initFastHttp() fasthttp.RequestHandler {
 	fasthttpHandler = httputilsv1.CORS(router.Handler)
 
 	handlerwithLogging := middlewaresv1.LoggerMiddleware(fasthttpHandler)
-
+	log.Println("Starting http server on port: ", port)
 	server := fasthttp.Server{
 		Name:               "obra-3-controller",
 		ReadBufferSize:     4096 * 3,
