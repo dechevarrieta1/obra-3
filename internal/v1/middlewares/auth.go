@@ -2,13 +2,14 @@ package middlewaresv1
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/valyala/fasthttp"
 )
 
-var secretKey = []byte("1234azzzsdda")
+var secretKey = []byte(os.Getenv("JWT_SECRET"))
 
 func AuthMiddleware(next fasthttp.RequestHandler) fasthttp.RequestHandler {
 	return func(ctx *fasthttp.RequestCtx) {
@@ -36,10 +37,10 @@ func AuthMiddleware(next fasthttp.RequestHandler) fasthttp.RequestHandler {
 	}
 }
 
-func GenerateJWT(username string) (string, error) {
+func GenerateJWT(accountID string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
-		"username": username,
-		"exp":      time.Now().Add(time.Hour * 72).Unix(),
+		"account_id": accountID,
+		"exp":        time.Now().Add(time.Hour * 72).Unix(),
 	})
 	tokenString, err := token.SignedString(secretKey)
 	if err != nil {
