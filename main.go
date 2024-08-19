@@ -5,9 +5,9 @@ import (
 	"log"
 	"strings"
 
-	middlewaresv1 "github.com/dechevarrieta1/obra-3/internal/v1/middlewares"
-	routesv1 "github.com/dechevarrieta1/obra-3/internal/v1/routes"
-	httputilsv1 "github.com/dechevarrieta1/obra-3/pkg/http"
+	middlewaresv1 "github.com/dechevarrieta1/hrhelpers/internal/v1/middlewares"
+	routesv1 "github.com/dechevarrieta1/hrhelpers/internal/v1/routes"
+
 	"github.com/valyala/fasthttp"
 )
 
@@ -26,12 +26,12 @@ func initFastHttp() fasthttp.RequestHandler {
 	}
 
 	router := routesv1.InitRoutes()
-	fasthttpHandler = httputilsv1.CORS(router.Handler)
 
-	handlerwithLogging := middlewaresv1.LoggerMiddleware(fasthttpHandler)
+	handlerwithLogging := middlewaresv1.LoggerMiddleware(router.Handler)
+
 	log.Println("Starting http server on port: ", port)
 	server := fasthttp.Server{
-		Name:               "obra-3-controller",
+		Name:               "hrhelpers-controller",
 		ReadBufferSize:     4096 * 3,
 		Handler:            handlerwithLogging,
 		MaxRequestBodySize: 100560416,

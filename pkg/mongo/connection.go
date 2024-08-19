@@ -22,8 +22,6 @@ type MongoConnection struct {
 
 func (mc MongoConnection) MakeBasicConnection() (*mongo.Client, error) {
 
-	// log.Printf("@1. NORMAL\n") // * This logs has been asked to be commented due to $$$ issues
-
 	doOnce.Do(func() {
 		clientOpts := options.Client().ApplyURI(mc.Url).SetMaxPoolSize(1000)
 
@@ -32,8 +30,6 @@ func (mc MongoConnection) MakeBasicConnection() (*mongo.Client, error) {
 			log.Println("@[MakeBasicConnection - MongoConnection] Err > ", err)
 		}
 	})
-
-	// log.Println("@[MakeBasicConnection - MongoConnection] > Success") // * This logs has been asked to be commented due to $$$ issues
 
 	return client, err
 }

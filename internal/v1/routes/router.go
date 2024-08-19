@@ -11,5 +11,7 @@ func InitRoutes() *fasthttprouter.Router {
 
 	HealthCheck(router)
 	AccountRoutes(router)
+	CandidatesRoutes(router)
+	EmployeesRoutes(router)
 	return router
 }
