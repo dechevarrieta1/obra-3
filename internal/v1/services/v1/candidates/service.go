@@ -12,7 +12,7 @@ import (
 
 func GetCandidates(ctx *fasthttp.RequestCtx) {
 	log.Println("[LOG][GetCandidates] initializing....")
-	candidates, err := candidateshelpersv1.GetAllCandidatesByQuery()
+	candidates, err := candidateshelpersv1.GetAllCandidatesByQuery(ctx.UserValue("company").(string))
 	if err != nil {
 		log.Println("[ERROR][GetCandidates] Error getting candidates: ", err)
 		httputilsv1.ResponseHandlers(ctx, nil, err, fasthttp.StatusInternalServerError, "Error getting candidates")
@@ -23,7 +23,7 @@ func GetCandidates(ctx *fasthttp.RequestCtx) {
 
 func GetCandidatesFiltered(ctx *fasthttp.RequestCtx) {
 	log.Println("[LOG][GetCandidatesFiltered] initializing....")
-	candidates, err := candidateshelpersv1.GetCandidatesByFilter(ctx.Request.Body())
+	candidates, err := candidateshelpersv1.GetCandidatesByFilter(ctx.Request.Body(), ctx.UserValue("company").(string))
 	if err != nil {
 		log.Println("[ERROR][GetCandidatesFiltered] Error getting candidates: ", err)
 		httputilsv1.ResponseHandlers(ctx, nil, err, fasthttp.StatusInternalServerError, "Error getting candidates")
@@ -42,7 +42,7 @@ func CreateCandidate(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	if err := candidateshelpersv1.CreateCanidateByQuery(candidate); err != nil {
+	if err := candidateshelpersv1.CreateCanidateByQuery(candidate, ctx.UserValue("company").(string)); err != nil {
 		log.Println("[ERROR][CreateCandidate] Error saving candidate to mongo: ", err)
 		httputilsv1.ResponseHandlers(ctx, nil, err, fasthttp.StatusInternalServerError, "Error saving candidate")
 		return
@@ -61,7 +61,7 @@ func UpdateCandidate(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	candidateUpd, err := candidateshelpersv1.UpdateCandidateByQuery(candidateID, candidateData)
+	candidateUpd, err := candidateshelpersv1.UpdateCandidateByQuery(candidateID, ctx.UserValue("company").(string), candidateData)
 	if err != nil {
 		log.Println("[ERROR][UpdateCandidate] Error updating candidate: ", err)
 		httputilsv1.ResponseHandlers(ctx, nil, err, fasthttp.StatusInternalServerError, "Error updating candidate")
@@ -75,7 +75,7 @@ func UpdateCandidate(ctx *fasthttp.RequestCtx) {
 func DeleteCandidate(ctx *fasthttp.RequestCtx) {
 	log.Println("[LOG][DeleteCandidate] initializing....")
 	candidateID := ctx.UserValue("id").(string)
-	candidateDel, err := candidateshelpersv1.DeleteCandidateByQuery(candidateID)
+	candidateDel, err := candidateshelpersv1.DeleteCandidateByQuery(candidateID, ctx.UserValue("company").(string))
 	if err != nil {
 		log.Println("[ERROR][DeleteCandidate] Error deleting candidate: ", err)
 		httputilsv1.ResponseHandlers(ctx, nil, err, fasthttp.StatusInternalServerError, "Error deleting candidate")

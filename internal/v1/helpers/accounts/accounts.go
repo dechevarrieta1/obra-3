@@ -23,7 +23,7 @@ var (
 
 func GenerateJWT(acc accountsmodelsv1.AccountUserRequest) (string, error) {
 	accID := uuidhelpersv1.GenerateUUID()
-	jwt, err := middlewaresv1.GenerateJWT(accID)
+	jwt, err := middlewaresv1.GenerateJWT(accID, acc.Company)
 	if err != nil {
 		return "", errorsutilsv1.HandleError("[Accountshelpersv1][GenerateAccountWithJWT]", "generating jwt", err)
 	}

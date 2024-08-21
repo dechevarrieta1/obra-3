@@ -32,14 +32,16 @@ func AuthMiddleware(next fasthttp.RequestHandler) fasthttp.RequestHandler {
 			ctx.SetBodyString("Invalid token")
 			return
 		}
-
+		ctx.SetUserValue("company", token.Claims.(jwt.MapClaims)["company"])
+		ctx.SetUserValue("accountId", token.Claims.(jwt.MapClaims)["account_id"])
 		next(ctx)
 	}
 }
 
-func GenerateJWT(accountID string) (string, error) {
+func GenerateJWT(accountID, company string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
 		"account_id": accountID,
+		"company":    company,
 		"exp":        time.Now().Add(time.Hour * 72).Unix(),
 	})
 	tokenString, err := token.SignedString(secretKey)

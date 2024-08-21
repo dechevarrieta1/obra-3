@@ -7,7 +7,7 @@ import (
 func InitRoutes() *fasthttprouter.Router {
 	router := fasthttprouter.New()
 
-	//* OBRA-3 ROUTES //
+	//* HR-HELPERS ROUTES //
 
 	HealthCheck(router)
 	AccountRoutes(router)

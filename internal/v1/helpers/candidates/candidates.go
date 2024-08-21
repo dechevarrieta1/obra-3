@@ -14,12 +14,12 @@ import (
 
 var (
 	mongoConn = mongoutilsv1.MongoConnection{
-		Url:      os.Getenv("HRHELPERS_MONGO_URL"),
-		Database: "hrhelpers",
+		Url: os.Getenv("HRHELPERS_MONGO_URL"),
 	}
 )
 
-func GetAllCandidatesByQuery() ([]candidatesmodelsv1.Candidate, error) {
+func GetAllCandidatesByQuery(database string) ([]candidatesmodelsv1.Candidate, error) {
+	mongoConn.Database = database
 	//TODO get all the candidates from mongo
 	candidates := []candidatesmodelsv1.Candidate{}
 	// make the conn to mongo
@@ -41,7 +41,9 @@ func GetAllCandidatesByQuery() ([]candidatesmodelsv1.Candidate, error) {
 	return candidates, nil
 }
 
-func GetCandidatesByFilter(query []byte) ([]candidatesmodelsv1.Candidate, error) {
+func GetCandidatesByFilter(query []byte, database string) ([]candidatesmodelsv1.Candidate, error) {
+	mongoConn.Database = database
+
 	candidates := []candidatesmodelsv1.Candidate{}
 	// make the conn to mongo
 	client, err := mongoConn.MakeBasicConnection()
@@ -70,7 +72,9 @@ func GetCandidatesByFilter(query []byte) ([]candidatesmodelsv1.Candidate, error)
 	return candidates, nil
 }
 
-func CreateCanidateByQuery(candidate candidatesmodelsv1.Candidate) error {
+func CreateCanidateByQuery(candidate candidatesmodelsv1.Candidate, database string) error {
+	mongoConn.Database = database
+
 	log.Println("[LOG][SaveCandidateToMongo] initializing....")
 	client, err := mongoConn.MakeBasicConnection()
 	if err != nil {
@@ -85,7 +89,9 @@ func CreateCanidateByQuery(candidate candidatesmodelsv1.Candidate) error {
 	return nil
 }
 
-func UpdateCandidateByQuery(candidateID string, candidate candidatesmodelsv1.Candidate) (candidatesmodelsv1.Candidate, error) {
+func UpdateCandidateByQuery(candidateID, database string, candidate candidatesmodelsv1.Candidate) (candidatesmodelsv1.Candidate, error) {
+	mongoConn.Database = database
+
 	log.Println("[LOG][UpdateCandidateByQuery] initializing....")
 
 	candidateRes := candidatesmodelsv1.Candidate{}
@@ -105,7 +111,9 @@ func UpdateCandidateByQuery(candidateID string, candidate candidatesmodelsv1.Can
 	return candidateRes, nil
 }
 
-func DeleteCandidateByQuery(id string) (candidatesmodelsv1.Candidate, error) {
+func DeleteCandidateByQuery(id,database string) (candidatesmodelsv1.Candidate, error) {
+	mongoConn.Database = database
+
 	log.Println("[LOG][DeleteCandidateByQuery] initializing....")
 
 	candidateRes := candidatesmodelsv1.Candidate{}
