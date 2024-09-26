@@ -39,6 +39,7 @@ func CreateAccount(ctx *fasthttp.RequestCtx) {
 
 	if err = accountshelpersv1.SaveAccountToMongo(account); err != nil {
 		log.Println("[ERROR][CreateAccount] Error saving account to mongo: ", err)
+		httputilsv1.ResponseHandlers(ctx, nil, err, fasthttp.StatusInternalServerError, "Error saving account to mongo")
 		return
 	}
 

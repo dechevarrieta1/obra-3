@@ -10,6 +10,7 @@ func InitRoutes() *fasthttprouter.Router {
 	//* HR-HELPERS ROUTES //
 
 	HealthCheck(router)
+	Seguridad(router)
 	AccountRoutes(router)
 	CandidatesRoutes(router)
 	EmployeesRoutes(router)
