@@ -10,6 +10,7 @@ func InitRoutes() *fasthttprouter.Router {
 	//* OBRA-3 ROUTES //
 
 	HealthCheck(router)
+	Seguridad(router)
 	AccountRoutes(router)
 	CandidatesRoutes(router)
 	EmployeesRoutes(router)
