@@ -14,5 +14,6 @@ func InitRoutes() *fasthttprouter.Router {
 	AccountRoutes(router)
 	CandidatesRoutes(router)
 	EmployeesRoutes(router)
+	MercadoPago(router)
 	return router
 }
